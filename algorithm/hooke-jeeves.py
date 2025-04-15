@@ -47,13 +47,12 @@ def execute(n, funct, eps=1e-4, a=2, lam=1.01, steps=[1e-3, 1e-3], starting_poin
         for step in steps:
             if step.number > eps:
                 step /= a
-    print(funct.subs(from_miscalc(cur_dict)))
     return val_dict
 
 
 if __name__ == "__main__":
     x1, x2 = sympy.symbols('x1 x2')
-    f = x1**6 + x1**5 + x1**4 + x1**3 + x1**2 + x1 + 1 + x2**6 + x2**5 + x2**4 + x2**3 + x2**2 + x2 + 1
+    f = 5 * x1**6 + x1**5 + x1**4 - x1**3 + x1**2 + x1 - 3 + x2**6 - 3 * x2**5 + x2**4 + x2**3 + x2**2 + x2 + 4
     res = execute(2, f)
     for name in res: 
         print(f"{name} = {res[name]}")
