@@ -1,0 +1,2 @@
+class WrongSizeError(Exception):
+    pass
