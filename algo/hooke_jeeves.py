@@ -1,7 +1,6 @@
-from wrong_size_error import WrongSizeError
-from miscalc_number import MiscalcNumber
-import sympy
-
+import sympy, os
+from algo.miscalc_number import MiscalcNumber
+from algo.wrong_size_error import WrongSizeError
 
 def from_miscalc(v):
     v = v.copy()
@@ -9,10 +8,11 @@ def from_miscalc(v):
         v[name] = v[name].number
     return v
 
-def execute(n, funct, eps=1e-4, a=2, lam=1.01, steps=[1e-3, 1e-3], starting_point=[-4, -4]):
-    if len(steps) != len(starting_point) or len(steps) != n:
+
+def execute(var_names, funct, eps=1e-4, a=2, lam=1.01, steps=[1e-3, 1e-3], starting_point=[-4, -4]):
+    n = len(var_names)
+    if len(steps) != len(starting_point) or len(steps) != n or n == 0:
         raise WrongSizeError
-    var_names = [f"x{i}" for i in range(1, n + 1)]
     val_dict = dict()
     for name, val in zip(var_names, starting_point):
         val_dict[name] = MiscalcNumber(val)
@@ -20,8 +20,10 @@ def execute(n, funct, eps=1e-4, a=2, lam=1.01, steps=[1e-3, 1e-3], starting_poin
     lam = MiscalcNumber(lam)
     a = MiscalcNumber(a)
     steps=[MiscalcNumber(i) for i in steps]
+    its = 0
 
     while max([i.number for i in steps]) >= eps:
+        its += 1
         cur_dict = val_dict.copy()
         cur = -1
         current_f = f0
@@ -53,6 +55,6 @@ def execute(n, funct, eps=1e-4, a=2, lam=1.01, steps=[1e-3, 1e-3], starting_poin
 if __name__ == "__main__":
     x1, x2 = sympy.symbols('x1 x2')
     f = 5 * x1**6 + x1**5 + x1**4 - x1**3 + x1**2 + x1 - 3 + x2**6 - 3 * x2**5 + x2**4 + x2**3 + x2**2 + x2 + 4
-    res = execute(2, f)
+    res = execute(['x1', 'x2'], f)
     for name in res: 
         print(f"{name} = {res[name]}")
