@@ -8,6 +8,7 @@ def from_miscalc(v):
         v[name] = v[name].number
     return v
 
+MAX_ITERATIONS = 100
 
 def execute(var_names, funct, eps=1e-4, a=2, lam=1.01, steps=[1e-3, 1e-3], starting_point=[-4, -4]):
     n = len(var_names)
@@ -24,6 +25,8 @@ def execute(var_names, funct, eps=1e-4, a=2, lam=1.01, steps=[1e-3, 1e-3], start
 
     while max([i.number for i in steps]) >= eps:
         its += 1
+        if its > MAX_ITERATIONS:
+            break
         cur_dict = val_dict.copy()
         cur = -1
         current_f = f0
