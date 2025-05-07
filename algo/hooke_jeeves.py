@@ -8,7 +8,7 @@ def from_miscalc(v):
         v[name] = v[name].number
     return v
 
-MAX_ITERATIONS = 100
+MAX_ITERATIONS = 1000
 
 def execute(var_names, funct, eps=1e-4, a=2, lam=1.01, steps=[1e-3, 1e-3], starting_point=[-4, -4]):
     n = len(var_names)
@@ -47,12 +47,12 @@ def execute(var_names, funct, eps=1e-4, a=2, lam=1.01, steps=[1e-3, 1e-3], start
             for name in val_dict:
                 cur_dict[name] += lam * (cur_dict[name] - val_dict[name])
             val_dict = cur_dict
-            f0 = current_f
+            f0 = funct.subs(from_miscalc(cur_dict))
             continue
         for step in steps:
             if step.number > eps:
                 step /= a
-    return val_dict
+    return [val_dict, f0]
 
 
 if __name__ == "__main__":

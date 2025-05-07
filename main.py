@@ -52,11 +52,12 @@ def main():
         try:
             vars = sympy.symbols(variables.text())
             expr = sympy.sympify(funct.text())
-            res = execute(vars, expr, 1e-3, 2, 1.01, [1e-1 for i in range(len(vars))], [-2 for i in range(len(vars))])
+            res, val = execute(vars, expr, 1e-3, 2, 1.01, [1e-1 for i in range(len(vars))], [-2 for i in range(len(vars))])
 
             rs = ''
             for name in res:
                 rs += f"{name} = {res[name]}\n"
+            rs += f"f(x) = {val}"
 
             QtWidgets.QMessageBox.information(None, "Ответ", rs)
         except Exception:
